@@ -40,9 +40,12 @@ def calculate_bearing(vector):
 
 def main():
     print('Starting point: ')
-    start_coords = np.array([float(input('Latitude: ')), float(input('Longitude: '))])
+    start_coords = np.array([float(input('Latitude [decimal]: ')), float(input('Longitude [decimal]: '))])
     print('Final point: ')
-    end_coords = np.array([float(input('Latitude: ')), float(input('Longitude: '))])
+    end_coords = np.array([float(input('Latitude [decimal]: ')), float(input('Longitude [decimal]: '))])
+
+    start_coords = np.flip(start_coords)
+    end_coords = np.flip(end_coords)
 
     flight_time = float(input('Flight time [s]: '))
     target_time = float(input('Target time [s]: '))
@@ -50,14 +53,14 @@ def main():
     vector = end_coords - start_coords
     drone_target_coords = start_coords + vector * (target_time / flight_time)
 
-    bearing = calculate_bearing(vector)
+    bearing = calculate_bearing(vector) - 90.0
 
-    target_coords = calculate_coordinates_shift(drone_target_coords[0],
-                                                drone_target_coords[1],
+    target_coords = calculate_coordinates_shift(drone_target_coords[1],
+                                                drone_target_coords[0],
                                                 bearing,
                                                 50)
 
-    print(f'\n1The target point GPS coordinates are:\n'
+    print(f'\nThe target point GPS coordinates are:\n'
           f'Latitude: {target_coords[0]}\n'
           f'Longitude: {target_coords[1]}')
 
